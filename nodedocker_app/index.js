@@ -1,86 +1,47 @@
-// const hapi = require('@hapi/hapi');
-const express = require('express');
-const mongoose = require('mongoose');
+const Hapi = require('@hapi/hapi');
 
-const app = express();
-
-app.set('view engine', 'ejs');
-
-app.use(express.urlencoded({ extended: false }));
-
-// Connect to MongoDB
-mongoose
-  .connect(
-    'mongodb://mongo:27017/docker-node-mongo',
-    { useNewUrlParser: true,
-      useUnifiedTopology: true }
-  )
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log(err));
-
-console.log('=====Mela: connected to mongo. version 2');
-
-
-// const options = {
-//   autoIndex: false, // Don't build indexes
-//   reconnectTries: 30, // Retry up to 30 times
-//   reconnectInterval: 500, // Reconnect every 500ms
-//   poolSize: 10, // Maintain up to 10 socket connections
-//   // If not connected, return errors immediately rather than waiting for reconnect
-//   bufferMaxEntries: 0
-// }
-
-// const connectWithRetry = () => {
-//   console.log('===Mela: MongoDB connection with retry')
-//   mongoose.connect("mongodb://mongo:27017/docker-node-mongo", options).then(()=>{
-//     console.log('===Mela: MongoDB is connected')
-//   }).catch(err=>{
-//     console.log('===Mela: MongoDB connection unsuccessful, retry after 5 seconds.')
-//     setTimeout(connectWithRetry, 5000)
-//   })
-// }
-
-// connectWithRetry()
-
-const Item = require('./models/Item');
-
-app.get('/', (req, res) => {
-    Item.find()
-      .then(items => res.render('index', { items }))
-      .catch(err => res.status(404).json({ msg: 'No items found ' + err }));
-  });
-  
-app.post('/item/add', (req, res) => {
-    const newItem = new Item({
-      name: req.body.name
+const init = async () => {
+    const server = Hapi.server({
+        port: 3000,
+        host: 'nodejsserver'
     });
-  
-    newItem.save().then(item => res.redirect('/'));
+
+    await server.register({
+        plugin: require('hapi-mongodb'),
+        options: {
+            url: 'mongodb://mongo:27017/docker-node-mongo',
+            settings: {
+                useUnifiedTopology: true
+            },
+        decorate: true
+        }
+    });
+
+    server.route(
+        {
+            method: 'GET',
+            path: '/',
+            handler: async (req, h) => {
+                const offset = Number(req.query.offset) || 0;
+
+                return await req.mongo.db.collection('books').find({}).skip(offset).limit(20).toArray();
+            }
+        },
+        {
+            method: 'POST',
+            path: '/item/add',
+            handler: async (req, h) => {
+                return await req.mongo.db.collection('movies').insertOne(req.payload);
+            }
+        });
+
+    await server.start();
+    console.log(`Server running on ${server.info.uri}`);
+};
+
+process.on('unhandledRejection', (err) => {
+    console.log(`The following error occured on node server side: ${err}. Will exit with status code 1.`);
+    process.exit(1);
 });
-  
-const port = 3000;
-  
-app.listen(port, () => console.log(`=====Mela: Server running on port ${port}...`));
 
-// const server = hapi.server({
-//     port: 3000,
-//     host: 'localhost'
-// });
-
-// const start = async () => {
-//     await server.start();
-// };
-
-// start();
-
-// server.route({
-//     path: '/',
-//     method: 'GET',
-//     handler: (request, h) => {
-//       return 'Hello, hapi!';
-//     }
-// });
-
-// server.start();
-// console.log('Server running on %s', server.info.uri);
-
+init();
