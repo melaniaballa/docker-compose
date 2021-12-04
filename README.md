@@ -12,4 +12,5 @@ My first push
 
 3. Replace express with HapiJs. Working GET endpoint and ruturning empty array, as expected.
 
+4. Include React - static content.
 
