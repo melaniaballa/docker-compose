@@ -8,16 +8,18 @@ app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: false }));
 
-console.log('=================Mela: trying to connect to Mongo');
-
 // Connect to MongoDB
 mongoose
   .connect(
     'mongodb://mongo:27017/docker-node-mongo',
-    { useNewUrlParser: true }
+    { useNewUrlParser: true,
+      useUnifiedTopology: true }
   )
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
+
+console.log('=====Mela: connected to mongo. version 2');
+
 
 // const options = {
 //   autoIndex: false, // Don't build indexes
@@ -45,7 +47,7 @@ const Item = require('./models/Item');
 app.get('/', (req, res) => {
     Item.find()
       .then(items => res.render('index', { items }))
-      .catch(err => res.status(404).json({ msg: 'No items found' }));
+      .catch(err => res.status(404).json({ msg: 'No items found ' + err }));
   });
   
 app.post('/item/add', (req, res) => {
@@ -58,7 +60,7 @@ app.post('/item/add', (req, res) => {
   
 const port = 3000;
   
-app.listen(port, () => console.log('=====Mela: Server running...'));
+app.listen(port, () => console.log(`=====Mela: Server running on port ${port}...`));
 
 // const server = hapi.server({
 //     port: 3000,
