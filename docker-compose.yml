@@ -8,9 +8,9 @@ services:
         hostname: nodejsserver
         ports:
             - "3000:3000" 
+        restart: always
         # networks:
         #     - example-net
-
         depends_on:
             - mongo
     mongo:
