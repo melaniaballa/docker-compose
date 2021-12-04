@@ -8,8 +8,8 @@ services:
         hostname: nodejsserver
         ports:
             - "3000:3000" 
-        networks:
-            - open-network
+        # networks:
+        #     - example-net
 
         depends_on:
             - mongo
@@ -20,8 +20,8 @@ services:
             - ./data:/data/db
         ports:
             - "27017:27017" 
-        networks:
-            - open-network 
+        # networks:
+        #     - example-net 
     nginx:
         build:
           context: ./nginx
@@ -31,9 +31,9 @@ services:
             - "80:80" 
         depends_on:
             - nodejs-app
-        networks:
-            - open-network
+#         networks:
+#             - example-net
 
-networks:
-    open-network:
-    external: true
+# networks:
+#     example-net:
+#         external: true
