@@ -14,3 +14,10 @@ My first push
 
 4. Include React - static content.
 
+5. Created login with savind username in store.
+
+6. Add axios for http request to server.
+
+7. Implement login to call GET form stored data. On 200 move to Home, on error display message.
+
+

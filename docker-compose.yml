@@ -6,7 +6,7 @@ services:
         container_name: nodejsserver
         hostname: nodejsserver
         ports:
-            - "3008:3000"
+            - "3000:3000"
         environment:
             - DB_NAME:"mongo"
             - DB_PORT:"27017"

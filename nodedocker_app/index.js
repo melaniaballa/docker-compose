@@ -19,15 +19,27 @@ const init = async () => {
 
     server.route(
         {
+            config: {
+                cors: {
+                    origin: ['*'],
+                    additionalHeaders: ['cache-control', 'x-requested-with']
+                }
+            },
             method: 'GET',
-            path: '/',
+            path: '/books',
             handler: async (req, h) => {
                 const offset = Number(req.query.offset) || 0;
 
-                return await req.mongo.db.collection('books').find({}).skip(offset).limit(20).toArray();
+                return await req.mongo.db.collection('books').find({}).skip(offset).limit(20).toArray() == [] ? [] : 'No data inside MongoDB';
             }
         },
         {
+            config: {
+                cors: {
+                    origin: ['*'],
+                    additionalHeaders: ['cache-control', 'x-requested-with']
+                }
+            },
             method: 'POST',
             path: '/item/add',
             handler: async (req, h) => {

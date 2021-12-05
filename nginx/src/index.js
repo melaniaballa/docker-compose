@@ -14,7 +14,7 @@ ReactDOM.render(
     <BrowserRouter history={browserHistory}>
       <Routes>
         <Route exact path="/" element={<Home/>} />
-        <Route exact path="/login" element={<Login/>} />
+        <Route path="/login" element={<Login/>} />
       </Routes>
     </BrowserRouter>
   </Provider>,

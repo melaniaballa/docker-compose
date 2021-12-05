@@ -1,18 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userActions } from '../actions/actionUser';
-
-import configureStore from '../store/storeUser';
-
-const store = configureStore();
+import { browserHistory } from '../history';
+import http from '../http-common';
 
 class Login extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            username: ''
+            username: '',
+            loginError: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -20,21 +18,27 @@ class Login extends React.Component {
     }
 
     handleChange(e) {
+        this.setState({loginError: false});
         const { name, value } = e.target;
-        this.setState({ ['username']: value });
+        this.setState({ username: value });
     }
 
     handleSubmit(e) {
         e.preventDefault();
 
-        console.log(`====Mela: Login handleSubmit: this.state: ${this.state}`);
         const { username } = this.state;
 
-        console.log(`====Mela: Login handleSubmit: username: ${username}`);
         if (username) {
-            // this.props.dispatch(userActions.login(username));
-            this.props.login(username);
-            // store.dispatch(userActions.login(username));
+            const response = http.get("/books");
+
+            response
+                .then((res) => {
+                    this.props.login(username);
+                    browserHistory.push('/');
+                })
+                .catch((err) => {
+                    this.setState({ loginError: true });
+                });
         }
     }
 
@@ -55,6 +59,7 @@ class Login extends React.Component {
                     <div className="form-group">
                         <button className="btn btn-primary">Login</button>
                     </div>
+                    {this.state.loginError && <h2>Authentication failed. Please verify that the server is up and connection is established.</h2>}
                 </form>
             </div>
         );
