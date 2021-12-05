@@ -48,12 +48,12 @@ const init = async () => {
             handler: async (req, h) => {
                 console.log(`=================Mela:   inside aggregate !!!!!!!=====================`);
 
-                await await req.mongo.db.collection('books').insertMany(books);
+                await req.mongo.db.collection('books').insertMany(books);
 
                 const measurePromise = (fn) => {
-                    let onPromiseDone = () => performance.now() - start;
+                    const onPromiseDone = () => performance.now() - start;
                 
-                    let start = performance.now();
+                    const start = performance.now();
                     return fn().then(onPromiseDone, onPromiseDone);
                 }
 
