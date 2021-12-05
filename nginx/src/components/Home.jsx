@@ -1,23 +1,27 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class Home extends Component {
-    
-    render() {
-      console.log(`=====Mela: Home: this.props: ${JSON.stringify(this.props)}`);
-      const { username } = this.props;
-      console.log(`=====Mela: Home: username: ${username}`);
-      return (
-        <div>
-            <h5>Welcome Melaniaaaa</h5>
-        </div>
-      )
-    }
-  }
 
-function mapState(state) {
-    return { username: state.username };
+  render() {
+    return (
+      <div>
+        <h2  style={{color: 'tomato'}}>Welcome</h2>
+        <div>
+        <ul>
+          <li style={{margin: 2 + 'em'}}>
+            <Link to="/itemGenerator">Item Generator</Link>
+          </li>
+          <li style={{margin: 2 + 'em'}}>
+            <Link to="/aggregationTime">Aggregation Time</Link>
+          </li>
+        </ul>
+        </div>
+      </div>
+    );
+  }
 }
 
-const connectedHome = connect(mapState)(Home);
+const connectedHome = connect()(Home);
 export { connectedHome as Home };

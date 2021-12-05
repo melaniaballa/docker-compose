@@ -50,14 +50,14 @@ class Login extends React.Component {
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div>
                         <label htmlFor="username">Username</label>
-                        <input type="text" className="form-control" name="username" value={username} onChange={this.handleChange} />
+                        <input type="text" name="username" value={username} onChange={this.handleChange} />
                     </div>
                     <div>
                         <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" name="password"/>
+                        <input type="password"name="password"/>
                     </div>
-                    <div className="form-group">
-                        <button className="btn btn-primary">Login</button>
+                    <div>
+                        <button  style={{ ...{padding: '10px 24px'}, ...{border: '2px solid #4CAF50'}}}>Login</button>
                     </div>
                     {this.state.loginError && <h2>Authentication failed. Please verify that the server is up and connection is established.</h2>}
                 </form>
