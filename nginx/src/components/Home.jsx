@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-export class Home extends Component {
+class Home extends Component {
     
     render() {
+      console.log(`=====Mela: Home: this.props: ${JSON.stringify(this.props)}`);
+      const { username } = this.props;
+      console.log(`=====Mela: Home: username: ${username}`);
       return (
         <div>
             <h5>Welcome Melaniaaaa</h5>
@@ -11,11 +14,10 @@ export class Home extends Component {
       )
     }
   }
-  
-  const mapStateToProps = (state) => {
-    return {
-      username: state.username
-    }
-  }
-  
-  export default connect(mapStateToProps)(Home);
+
+function mapState(state) {
+    return { username: state.username };
+}
+
+const connectedHome = connect(mapState)(Home);
+export { connectedHome as Home };

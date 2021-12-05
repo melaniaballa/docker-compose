@@ -1,8 +1,15 @@
-import { createStore } from "redux";
-import reducer from "../reducers/reducerUser";
+import { createStore, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import { createLogger } from 'redux-logger';
+import reducer from '../reducers/reducerUser';
 
-function configureStore(state = { username: '' }) {
-  return createStore(reducer, state);
-}
+const loggerMiddleware = createLogger();
+const configureStore = () => createStore(
+  reducer,
+    applyMiddleware(
+        thunkMiddleware,
+        loggerMiddleware
+    )
+);
 
 export default configureStore;
