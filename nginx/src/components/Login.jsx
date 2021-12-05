@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userActions } from '../actions/actionUser';
 
+import configureStore from '../store/storeUser';
+
+const store = configureStore();
+
 class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -28,7 +32,9 @@ class Login extends React.Component {
 
         console.log(`====Mela: Login handleSubmit: username: ${username}`);
         if (username) {
-            this.props.login(username);
+            this.props.dispatch(userActions.login(username));
+            // this.props.login(username);
+            // store.dispatch(userActions.login(username));
         }
     }
 
@@ -55,13 +61,16 @@ class Login extends React.Component {
     }
 }
 
-function mapState(state) {
-    return { username: state.username };
-}
+// function mapState(state) {
+//     return { username: state.username };
+// }
 
-const actionCreators = {
-    login: userActions.login
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     login: userActions.login(),
+//     dispatch
+//   }
+// }
 
-const connectedLogin = connect(mapState, actionCreators)(Login);
+const connectedLogin = connect()(Login);
 export { connectedLogin as Login};

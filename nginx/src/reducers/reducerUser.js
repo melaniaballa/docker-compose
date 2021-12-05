@@ -9,10 +9,10 @@ function reducer(state = initialState, action) {
     case userConstants.LOGIN:
       console.log('====Mela: login Reducer: ', action.payload.username);
       return {
-        ...state,
         username: action.payload.username
       }
     default:
+      console.log('====Mela: login DefaultReducer: ');
       return state
   }
 }
