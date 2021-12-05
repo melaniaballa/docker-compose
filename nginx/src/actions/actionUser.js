@@ -1,19 +1,17 @@
 import { userConstants } from '../constants/auth';
 import { browserHistory } from '../history';
 
-export const userActions = {
-    login
+const login = (username) => {
+    console.log(`====Mela: actions: login: ${username}`);
+
+    // const history = createBrowserHistory({forceRefresh:true});
+    console.log(`====Mela: Action login: history: ${browserHistory}`);
+    browserHistory.push('/');
+    // browserHistory.push('/')
+
+    return { type: userConstants.LOGIN, username };
 };
 
-function login(username) {
-    return () => {
-        console.log(`====Mela: actions: login: ${username}`);
-
-        // const history = createBrowserHistory({forceRefresh:true});
-        console.log(`====Mela: Action login: history: ${browserHistory}`);
-        browserHistory.push('/');
-        // browserHistory.push('/')
-
-        return { type: userConstants.LOGIN, username }
-    };
-}
+export const userActions = {
+  login
+};

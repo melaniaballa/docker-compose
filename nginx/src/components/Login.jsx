@@ -32,8 +32,8 @@ class Login extends React.Component {
 
         console.log(`====Mela: Login handleSubmit: username: ${username}`);
         if (username) {
-            this.props.dispatch(userActions.login(username));
-            // this.props.login(username);
+            // this.props.dispatch(userActions.login(username));
+            this.props.login(username);
             // store.dispatch(userActions.login(username));
         }
     }
@@ -61,16 +61,15 @@ class Login extends React.Component {
     }
 }
 
-// function mapState(state) {
-//     return { username: state.username };
-// }
+const mapState = (state) => {
+    return { username: state.username };
+}
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     login: userActions.login(),
-//     dispatch
-//   }
-// }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (username) => dispatch(userActions.login(username))
+  }
+}
 
-const connectedLogin = connect()(Login);
+const connectedLogin = connect(mapState, mapDispatchToProps)(Login);
 export { connectedLogin as Login};
