@@ -57,7 +57,7 @@ const init = async () => {
                     return fn().then(onPromiseDone, onPromiseDone);
                 }
 
-                return await measurePromise(() => req.mongo.db.collection('books').aggregate([{ $sort : { 'isbn' : -1 }}]));
+                return await measurePromise(async () => req.mongo.db.collection('books').aggregate([{ $sort : { 'isbn' : -1 }}]));
             }
         },
         {
