@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-    nodejs-app:
+    nodejsserver:
         build: ./nodedocker_app
         container_name: nodejsserver
         hostname: nodejsserver
@@ -11,7 +11,6 @@ services:
             - DB_NAME:"mongo"
             - DB_PORT:"27017"
         networks:
-            - frontend
             - backend
         depends_on:
             - mongo
@@ -29,10 +28,9 @@ services:
         ports:
             - "80:80" 
         depends_on:
-            - nodejs-app
+            - nodejsserver
         networks:
-            - frontend
+            - backend
 
 networks:
     backend:
-    frontend:

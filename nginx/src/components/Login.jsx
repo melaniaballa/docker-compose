@@ -1,8 +1,8 @@
 import React from 'react';
+import axios from "axios";
 import { connect } from 'react-redux';
 import { userActions } from '../actions/actionUser';
 import { browserHistory } from '../history';
-import http from '../http-common';
 
 class Login extends React.Component {
     constructor(props) {
@@ -29,16 +29,15 @@ class Login extends React.Component {
         const { username } = this.state;
 
         if (username) {
-            const response = http.get("/books");
-
-            response
-                .then((res) => {
-                    this.props.login(username);
-                    browserHistory.push('/');
-                })
-                .catch((err) => {
-                    this.setState({ loginError: true });
-                });
+            axios.get('/services/books')
+            .then(res => {
+                console.log(`====Mela: ${res}`);
+                this.props.login(username);
+                browserHistory.push('/');
+            })
+            .catch(err => {
+                console.log(err);
+            });
         }
     }
 

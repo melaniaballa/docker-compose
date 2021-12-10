@@ -1,22 +1,20 @@
 import React from 'react';
+import axios from "axios";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import http from '../http-common';
+
 
 class AggregationTime extends React.Component {
 
     aggregateBooks(e) {
         e.preventDefault();
-
-        const response = http.get("/aggregate");
-
-        response
+        axios.get('/services/aggregate')
             .then((res) => {
                 console.log(`========Mela: Aggregate time: res: ${res}`);
             })
             .catch((err) => {
                 console.log(`Error occured while obtainingt aggregation time: ${err}`)
-            });;
+            });
     }
 
     render() {

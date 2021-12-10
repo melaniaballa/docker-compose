@@ -5,9 +5,9 @@ const init = async () => {
     const server = Hapi.server({
         port: 3000,
         host: 'nodejsserver',
-        routes: {
-            cors: true
-          }
+        // routes: {
+        //     cors: true
+        //   }
     });
 
     await server.register({
@@ -24,27 +24,27 @@ const init = async () => {
     server.route(
         {
             method: 'GET',
-            path: '/books',
+            path: '/api/books',
             handler: async (req, h) => {
                 console.log(`=================inside BOOKS GET !!!!!!!=====================`);
                 const offset = Number(req.query.offset) || 0;
-                await req.mongo.db.collection('books').insertOne({
-                    "title": "Play for Java",
-                    "isbn": "1617290904",
-                    "pageCount": 0,
-                    "publishedDate": { "$date": "2014-03-14T00:00:00.000-0700" },
-                    "thumbnailUrl": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/leroux.jpg",
-                    "status": "PUBLISH",
-                    "authors": ["Nicolas Leroux", "Sietse de Kaper"],
-                    "categories": []
-                });
+                // await req.mongo.db.collection('books').insertOne({
+                //     "title": "Play for Java",
+                //     "isbn": "1617290904",
+                //     "pageCount": 0,
+                //     "publishedDate": { "$date": "2014-03-14T00:00:00.000-0700" },
+                //     "thumbnailUrl": "https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/leroux.jpg",
+                //     "status": "PUBLISH",
+                //     "authors": ["Nicolas Leroux", "Sietse de Kaper"],
+                //     "categories": []
+                // });
 
                 return await req.mongo.db.collection('books').find({}).skip(offset).limit(20).toArray();
             }
         },
         {
             method: 'GET',
-            path: '/aggregate',
+            path: '/api/aggregate',
             handler: async (req, h) => {
                 console.log(`=================Mela:   inside aggregate !!!!!!!=====================`);
 
@@ -57,18 +57,18 @@ const init = async () => {
                     return fn().then(onPromiseDone, onPromiseDone);
                 }
 
-                return await measurePromise(() => req.mongo.db.collection('books').aggregate([{ $sort : { 'isbn' : -1 }}]));
+                return await measurePromise(async () => await req.mongo.db.collection('books').aggregate([{ $sort : { 'isbn' : -1 }}]));
             }
         },
         {
-            config: {
-                cors: {
-                    origin: ['*'],
-                    additionalHeaders: ['cache-control', 'x-requested-with']
-                }
-            },
+            // config: {
+            //     cors: {
+            //         origin: ['*'],
+            //         additionalHeaders: ['cache-control', 'x-requested-with']
+            //     }
+            // },
             method: 'POST',
-            path: '/generate',
+            path: '/api/generate',
             handler: async (req, h) => {
                 console.log(`=================inside genearte !!!!!!!=====================`);
 

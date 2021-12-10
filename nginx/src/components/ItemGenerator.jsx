@@ -1,7 +1,7 @@
 import React from 'react';
+import axios from "axios";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import http from '../http-common';
 
 class ItemGenerator extends React.Component {
     constructor() {
@@ -14,16 +14,14 @@ class ItemGenerator extends React.Component {
   
     generateBooks(e) {
       e.preventDefault();
-      const response = http.post("/generate", {test: 'dsada', test2: 'dasdaf'});
-      response
-        .then((res) => {
-          console.log('=========Mela: Home:generateBooks Items succesfully generated.');
-          http.get("/books")
-              .then((res) => {
-                this.state.booksData = res;
-              });
-        })
-        .catch();
+      
+      axios.post('/services/generate')
+      .then(res => {
+          console.log(`====Mela Generate : ${res}`);
+      })
+      .catch(err => {
+          console.log(err);
+      });
     }
 
     render() {
